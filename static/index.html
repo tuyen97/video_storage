@@ -1,10 +1,11 @@
 <html>
+
 <head>
     <meta name="viewport"
-          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
+        content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!--<link rel="apple-touch-startup-image" href="splash.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-144x144.png" />
@@ -14,7 +15,7 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="mediaelement-mediaelement-8474a01/build/mediaelementplayer.min.css"/>-->
+    <!--    <link rel="stylesheet" href="mediaelement-mediaelement-8474a01/build/mediaelementplayer.min.css"/>-->
     <link rel="stylesheet" href="font-awesome-4.4.0/css/font-awesome.min.css">
 
 
@@ -25,16 +26,19 @@
     <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
     <script src="srt-webvtt/lib/index.js"></script>
     <style>
-        .video__main{
+        .video__main {
             width: 100vw;
             height: 100vh;
             display: grid;
             grid-template-columns: 300px 1fr;
             grid-gap: 10px;
         }
-        .tree_wrapper{
+
+        .tree_wrapper {
+            cursor: pointer;
         }
-        .video__wrapper{
+
+        .video__wrapper {
             background: #2b669a;
             padding: 10px 10px;
             border: 1px solid #069255;
@@ -42,20 +46,17 @@
     </style>
     <script src="app.js"></script>
 </head>
+
 <body>
-<div class="video__main">
-    <div id="tree" class="tree_wrapper"></div>
-    <div id="video-container" class="video__wrapper">
-        <video id="video" class="video-js"
-               autoplay
-               preload="auto"
-               width="640"
-               height="264"
-               data-setup="{}">
-<!--            <track label="Eng" kind="subtitles" srclang="en" id="sub" src="/video-data/video/sub/jellies.srt">-->
-        </video>
+    <div class="video__main">
+        <ul id="tree" class="tree_wrapper"></ul>
+        <div id="video-container" class="video__wrapper">
+            <video id="video" class="video-js" autoplay preload="auto" width="640" height="264" data-setup="{}">
+                <!--            <track label="Eng" kind="subtitles" srclang="en" id="sub" src="/video-data/video/sub/jellies.srt">-->
+            </video>
+        </div>
     </div>
-</div>
 
 </body>
+
 </html>

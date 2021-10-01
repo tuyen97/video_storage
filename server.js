@@ -4,6 +4,7 @@ const serveStatic = require('serve-static');
 const dirTree = require("directory-tree");
 const path = require('path');
 const bodyParser = require('body-parser');
+const morgan = require("morgan")
 
 let listenPort = 8080;
 let rootPath = null;
@@ -48,23 +49,29 @@ function initExpress() {
     const app = express();
     const server = http.Server(app);
 
-    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.urlencoded({ extended: false }));
 
-    app.all('*', function (request, response, next) {
-        console.log(request.url);
-        next();
-    });
+    // app.all('*', function (request, response, next) {
+    //     console.log(request.url);
+    //     next();
+    // });
+
+    app.use(morgan('common'))
+    let convertPath = (windowsPath) => windowsPath.replace(/^\\\\\?\\/, "").replace(/\\/g, '\/').replace(/\/\/+/g, '\/')
 
     app.use('/', serveStatic(path.join(__dirname, 'static')));
     app.get("/tree", (req, res) => {
         const tree = dirTree(rootPath,
             {
                 attributes: ["size", "type", "extension"],
-                extensions: /\.(mp4|srt)$/,
+                extensions: /\.(mp4)$/,
                 normalizePath: true
             }
         );
-        res.json(tree);
+        res.json({
+            data: tree,
+            root_dir: convertPath(rootPath)
+        });
     });
 
     app.use('/video-data/', serveStatic(rootPath));
