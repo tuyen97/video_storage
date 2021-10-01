@@ -3,7 +3,7 @@ $(function () {
     let mediaElement = null;
     let videoContainer = document.getElementById("video-container");
     let $video = document.getElementById('video');
-    let player = videojs($video, { controls: true });
+    // let player = videojs($video, { controls: true });
 
 
     function sortChildren(a, b) {
@@ -47,21 +47,27 @@ $(function () {
         let target = event.target;
         if (target.dataset.link) {
             videoContainer.hidden = false;
-            player.removeRemoteTextTrack(textTrack);
+            $video.setAttribute("src", target.dataset.link);
+
+            // player.removeRemoteTextTrack(textTrack);
             if (target.dataset.sub) {
                 let blob = await fetch(target.dataset.sub).then(r => r.blob());
                 let vttConverter = new WebVTTConverter(blob);
                 let url = await vttConverter.getURL();
-                player.src(target.dataset.link);
-                textTrack = player.addRemoteTextTrack({
-                    kind: 'subtitle',
-                    language: 'en',
-                    label: 'Eng',
-                    src: url,
-                    default: true
-                });
+                let track = document.getElementById("sub");
+                track.setAttribute("src", url);
+                // player.src(target.dataset.link);
+                // textTrack = player.addRemoteTextTrack({
+                //     kind: 'subtitle',
+                //     language: 'en',
+                //     label: 'Eng',
+                //     src: url,
+                //     default: true
+                // });
             }
-            player.play();
+            // player.play();
+            $video.load();
+            $video.onplay();
         } else {
             let ul = target.getElementsByTagName("ul");
             ul[0].hidden = !ul[0].hidden;
