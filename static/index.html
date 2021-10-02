@@ -30,18 +30,22 @@
             width: 100vw;
             height: 100vh;
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 500px 1fr;
             grid-gap: 10px;
         }
 
         .tree_wrapper {
             cursor: pointer;
+            overflow: auto;
         }
 
         .video__wrapper {
             background: #2b669a;
             padding: 10px 10px;
             border: 1px solid #069255;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
     <script src="app.js"></script>
@@ -51,8 +55,8 @@
     <div class="video__main">
         <ul id="tree" class="tree_wrapper"></ul>
         <div id="video-container" class="video__wrapper">
-            <video id="video" autoplay controls preload="auto" width="640" height="264">
-                <track label="Eng" kind="subtitles" srclang="en" id="sub" src="/video-data/video/sub/jellies.srt">
+            <video id="video" autoplay controls preload="auto" width="80%" height="80%">
+                <track label="Eng" kind="subtitles" srclang="en" id="sub">
             </video>
         </div>
     </div>

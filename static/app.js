@@ -1,8 +1,8 @@
 $(function () {
     let tree = document.getElementById("tree");
-    let mediaElement = null;
     let videoContainer = document.getElementById("video-container");
     let $video = document.getElementById('video');
+
     // let player = videojs($video, { controls: true });
 
 
@@ -13,6 +13,7 @@ $(function () {
     }
 
     let count = 0;
+
     function drawTree(elem, data, rootDir) {
         let li = document.createElement("li");
         li.textContent = data.name;
@@ -42,10 +43,15 @@ $(function () {
 
     }
 
-    let textTrack;
+    let prevElement;
     tree.addEventListener("click", async function (event) {
         let target = event.target;
         if (target.dataset.link) {
+            if (prevElement){
+                prevElement.style.background = "";
+            }
+            prevElement = target;
+            target.style.background = "#069255";
             videoContainer.hidden = false;
             $video.setAttribute("src", target.dataset.link);
 
@@ -56,18 +62,9 @@ $(function () {
                 let url = await vttConverter.getURL();
                 let track = document.getElementById("sub");
                 track.setAttribute("src", url);
-                // player.src(target.dataset.link);
-                // textTrack = player.addRemoteTextTrack({
-                //     kind: 'subtitle',
-                //     language: 'en',
-                //     label: 'Eng',
-                //     src: url,
-                //     default: true
-                // });
             }
-            // player.play();
             $video.load();
-            $video.onplay();
+            $video.play();
         } else {
             let ul = target.getElementsByTagName("ul");
             ul[0].hidden = !ul[0].hidden;
@@ -77,6 +74,4 @@ $(function () {
         console.log(data["root_dir"]);
         drawTree(tree, data.data, data["root_dir"]);
     });
-    // videoContainer.hidden = true;
-    //
 })
