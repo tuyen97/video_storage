@@ -16,24 +16,30 @@ $(function () {
 
     function drawTree(elem, data, rootDir) {
         let li = document.createElement("li");
-        li.textContent = data.name;
         elem.append(li);
+        li.textContent = data.name;
         if (data.extension === ".mp4") {
-            console.log(data.path);
-            console.log(rootDir);
             let fileRelativePath = data.path.replace(rootDir, "");
             li.dataset.link = "/video-data/" + fileRelativePath;
             li.dataset.sub = "/video-data/" + fileRelativePath.replace(".mp4", ".srt");
             li.dataset.isFolder = false;
+        }
+        if (data.extension === ".txt"){
+            let a = document.createElement("a");
+            let fileRelativePath = data.path.replace(rootDir, "");
+            li.textContent = ""
+            a.setAttribute("href", "/video-data/" + fileRelativePath);
+            a.textContent = data.name
+            li.append(a);
         }
 
         let ul = document.createElement("ul");
         if (count) {
             ul.hidden = true;
         }
-        li.append(ul);
         count++;
         if (data.children) {
+            li.append(ul);
             let children = data.children;
             children.sort(sortChildren);
             for (let child of children) {

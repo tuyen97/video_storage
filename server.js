@@ -64,7 +64,7 @@ function initExpress() {
         const tree = dirTree(rootPath,
             {
                 attributes: ["size", "type", "extension"],
-                extensions: /\.(mp4)$/,
+                extensions: /\.(mp4|txt)$/,
                 normalizePath: true
             }
         );
