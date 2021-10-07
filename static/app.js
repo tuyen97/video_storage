@@ -24,7 +24,7 @@ $(function () {
             li.dataset.sub = "/video-data/" + fileRelativePath.replace(".mp4", ".srt");
             li.dataset.isFolder = false;
         }
-        if (data.extension === ".txt"){
+        if (data.extension === ".html"){
             let a = document.createElement("a");
             let fileRelativePath = data.path.replace(rootDir, "");
             li.textContent = ""
