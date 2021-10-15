@@ -23,14 +23,21 @@ $(function () {
             li.dataset.link = "/video-data/" + fileRelativePath;
             li.dataset.sub = "/video-data/" + fileRelativePath.replace(".mp4", ".srt");
             li.dataset.isFolder = false;
+        }else {
+            let a = document.createElement("a");
+            let fileRelativePath = data.path.replace(rootDir, "");
+            li.textContent = ""
+            a.setAttribute("href", "/video-data/" + fileRelativePath);
+            a.textContent = data.name
+            li.append(a);
         }
         // if (data.extension === ".txt"){
-        let a = document.createElement("a");
-        let fileRelativePath = data.path.replace(rootDir, "");
-        li.textContent = ""
-        a.setAttribute("href", "/video-data/" + fileRelativePath);
-        a.textContent = data.name
-        li.append(a);
+        // let a = document.createElement("a");
+        // let fileRelativePath = data.path.replace(rootDir, "");
+        // li.textContent = ""
+        // a.setAttribute("href", "/video-data/" + fileRelativePath);
+        // a.textContent = data.name
+        // li.append(a);
         // }
 
         let ul = document.createElement("ul");
