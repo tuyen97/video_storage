@@ -24,14 +24,14 @@ $(function () {
             li.dataset.sub = "/video-data/" + fileRelativePath.replace(".mp4", ".srt");
             li.dataset.isFolder = false;
         }
-        if (data.extension === ".txt"){
-            let a = document.createElement("a");
-            let fileRelativePath = data.path.replace(rootDir, "");
-            li.textContent = ""
-            a.setAttribute("href", "/video-data/" + fileRelativePath);
-            a.textContent = data.name
-            li.append(a);
-        }
+        // if (data.extension === ".txt"){
+        let a = document.createElement("a");
+        let fileRelativePath = data.path.replace(rootDir, "");
+        li.textContent = ""
+        a.setAttribute("href", "/video-data/" + fileRelativePath);
+        a.textContent = data.name
+        li.append(a);
+        // }
 
         let ul = document.createElement("ul");
         if (count) {
@@ -53,7 +53,7 @@ $(function () {
     tree.addEventListener("click", async function (event) {
         let target = event.target;
         if (target.dataset.link) {
-            if (prevElement){
+            if (prevElement) {
                 prevElement.style.background = "";
             }
             prevElement = target;
