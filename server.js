@@ -42,18 +42,23 @@ async function init() {
         }
     }
     if (!rootPath) rootPath = path.resolve('.');
-    const tree = dirTree(rootPath,
-        {
-            attributes: ["size", "type", "extension"],
-            extensions: /\.(mp4|txt|html)$/,
-            normalizePath: true
+
+    setTimeout(async function run() {
+        console.log("sync source start")
+        const tree = dirTree(rootPath,
+            {
+                attributes: ["size", "type", "extension"],
+                extensions: /\.(mp4|txt|html)$/,
+                normalizePath: true
+            }
+        );
+        try {
+            await getHtmlContent(tree);
+        } catch (e) {
+            console.log(e.message);
         }
-    );
-    try {
-        await getHtmlContent(tree);
-    } catch (e) {
-        console.log(e.message);
-    }
+        setTimeout(run, 60 * 60 * 1000);
+    }, 60 * 60 * 1000);
     initExpress();
 }
 
