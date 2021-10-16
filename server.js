@@ -9,7 +9,7 @@ const morgan = require("morgan")
 let listenPort = 8080;
 let rootPath = null;
 
-function init() {
+async function init() {
     function exitWithUsage(argv) {
         console.log(
             'Usage: ' + argv[0] + ' ' + argv[1]
@@ -42,14 +42,27 @@ function init() {
         }
     }
     if (!rootPath) rootPath = path.resolve('.');
+    const tree = dirTree(rootPath,
+        {
+            attributes: ["size", "type", "extension"],
+            extensions: /\.(mp4|txt|html)$/,
+            normalizePath: true
+        }
+    );
+    try {
+        await getHtmlContent(tree);
+    } catch (e) {
+        console.log(e.message);
+    }
     initExpress();
 }
 
 function initExpress() {
+
     const app = express();
     const server = http.Server(app);
 
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({extended: false}));
 
     // app.all('*', function (request, response, next) {
     //     console.log(request.url);
@@ -64,7 +77,7 @@ function initExpress() {
         const tree = dirTree(rootPath,
             {
                 attributes: ["size", "type", "extension"],
-                extensions: /\.(mp4|txt|html)$/,
+                extensions: /\.(mp4|txt)$/,
                 normalizePath: true
             }
         );
@@ -80,6 +93,45 @@ function initExpress() {
     console.log('Listening to port', listenPort);
 }
 
-init();
+const fs = require('fs').promises;
+const parse = require("node-html-parser").parse
+const requestPromise = require("request-promise");
+
+async function getHtmlContent(node) {
+    if (node.type === "file") {
+        if (node.extension === ".html") {
+            // console.log(node)
+            // Use fs.readFile() method to read the file
+            let content = await fs.readFile(node.path, "utf-8");
+            const root = parse(content);
+            let script = root.getElementsByTagName("script")[0];
+            if (script) {
+                let link = script.textContent.split(" ")[2]
+                    .replace(";", "")
+                    .replace("\"", "")
+                    .replace("\"", "");
+
+                if (link.includes("download")) {
+                    let fileName = node.path.replace(".html", "");
+                    let err = fs.access(fileName, fs.F_OK);
+                    if (err) {
+                        let res = await requestPromise(link);
+                        await fs.writeFile(fileName, res);
+                        console.log(`write to file {} success`, fileName)
+                    } else {
+                        console.log(`file {} exist`, fileName);
+                    }
+
+                }
+            }
+        }
+        return;
+    }
+    for (let child of node.children) {
+        await getHtmlContent(child);
+    }
+}
+
+(async () => init())();
 
 
