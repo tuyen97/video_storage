@@ -113,13 +113,14 @@ async function getHtmlContent(node) {
 
                 if (link.includes("download")) {
                     let fileName = node.path.replace(".html", "");
-                    let err = fs.access(fileName, fs.F_OK);
-                    if (err) {
+                    try {
+                        fs.accessSync(fileName, fs.F_OK);
+                        console.log(`file {} exist`, fileName);
+
+                    } catch (e) {
                         let res = await requestPromise(link);
                         await fs.writeFile(fileName, res);
                         console.log(`write to file {} success`, fileName)
-                    } else {
-                        console.log(`file {} exist`, fileName);
                     }
 
                 }
